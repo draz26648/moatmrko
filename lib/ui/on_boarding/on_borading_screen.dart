@@ -30,13 +30,13 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     var boardController = PageController();
     List<BoardingModel> boarding = [
       BoardingModel(
-        image: 'assets/images/onboarding1.jpg',
+        image: 'assets/images/onboarding2.jpg',
         title: 'QR Code Ticket',
         body:
             'you get your QR ticket so that you can it on the day of the event to verify your registration',
       ),
       BoardingModel(
-        image: 'assets/images/onboarding2.jpg',
+        image: 'assets/images/onboarding1.jpg',
         title: 'Attend Session',
         body:
             'check the session that interested and join it easily through the App',

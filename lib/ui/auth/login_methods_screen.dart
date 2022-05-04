@@ -63,44 +63,6 @@ class _LoginMethodsScreenState extends State<LoginMethodsScreen> {
               const SizedBox(
                 height: 30,
               ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: 170,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: white,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/microsoft_logo.png',
-                        width: 150,
-                        height: 70,
-                      ),
-                    ),
-                  ),
-                  Container(
-                    width: 170,
-                    height: 70,
-                    decoration: BoxDecoration(
-                      color: white,
-                      borderRadius: BorderRadius.circular(25),
-                    ),
-                    child: Center(
-                      child: Image.asset(
-                        'assets/images/finance_logo.png',
-                        width: 150,
-                        height: 50,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 10,
-              ),
             ],
           ),
         ),
