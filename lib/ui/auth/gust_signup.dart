@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:moatamrk/constant/colors.dart';
+import 'package:moatamrk/ui/auth/payment_screen.dart';
 import 'package:moatamrk/ui/main_widgets/custom_btn.dart';
 import 'package:moatamrk/ui/main_widgets/custom_text_field.dart';
 
@@ -133,7 +134,7 @@ class _GuestSignUpScreenState extends State<GuestSignUpScreen> {
                 text: 'Sign Up',
                 onTap: () {
                   Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => HomeLayout()));
+                      MaterialPageRoute(builder: (context) => PaymentScreen()));
                 },
                 color: mainBgCrl,
               ),
