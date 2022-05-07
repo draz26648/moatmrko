@@ -35,13 +35,6 @@ class _HomeLayoutState extends State<HomeLayout> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title:
-            Text(_titles[currentIndex], style: TextStyle(color: Colors.black)),
-        centerTitle: true,
-        elevation: 0,
-        backgroundColor: Colors.transparent,
-      ),
       bottomNavigationBar: BottomNavigationBar(
         type: BottomNavigationBarType.fixed,
         selectedItemColor: Colors.white,
@@ -60,7 +53,7 @@ class _HomeLayoutState extends State<HomeLayout> {
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.notes),
-            label: 'My Notes',
+            label: 'My ِAgenda',
           ),
           const BottomNavigationBarItem(
             icon: Icon(Icons.qr_code),

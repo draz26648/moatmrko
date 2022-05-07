@@ -24,7 +24,7 @@ class _InstractorSignUpScreenState extends State<InstractorSignUpScreen> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.grey[50],
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.all(15.0),
