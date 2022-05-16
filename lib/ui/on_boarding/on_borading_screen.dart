@@ -82,7 +82,9 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       physics: BouncingScrollPhysics(),
                       onPageChanged: (int index) {
                         if (index == boarding.length - 1) {
-                          OnboardingCubit.get(context).isLast = true;
+                          setState(() {
+                            OnboardingCubit.get(context).isLast = true;
+                          });
                         }
                       },
                       itemBuilder: (context, index) =>
@@ -115,7 +117,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             txtColor: black,
                             color: white,
                             onTap: () {
-                              if (isLast == true) {
+                              if (OnboardingCubit.get(context).isLast) {
                                 OnboardingCubit.get(context).load();
                               } else {
                                 boardController.nextPage(
