@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+
+import 'package:moatamrk/business_logic/splash_cubit/splash_cubit.dart';
 import 'package:moatamrk/constant/colors.dart';
-import 'package:moatamrk/ui/on_boarding/on_borading_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -12,26 +13,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   //initialize the splash screen
-  void initialization() async {
-    FlutterNativeSplash.remove();
-    print('ready in 3...');
-    await Future.delayed(const Duration(seconds: 1));
-    print('ready in 2...');
-    await Future.delayed(const Duration(seconds: 1));
-    print('ready in 1...');
-    await Future.delayed(const Duration(seconds: 1));
-    print('go!');
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const OnBoardingScreen(),
-        ),
-        (route) => false);
-  }
 
   @override
   void initState() {
-    initialization();
+    SplashCubit.get(context).initialization();
     super.initState();
   }
 
@@ -42,25 +27,27 @@ class _SplashScreenState extends State<SplashScreen> {
         elevation: 0,
         backgroundColor: mainBgCrl,
       ),
-      body: SafeArea(
-        child: Container(
-          color: mainBgCrl,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Center(
-                child: Image.asset('assets/images/splash_logo.png'),
+      body: BlocBuilder<SplashCubit, SplashState>(
+        builder: (context, state) {
+          return SafeArea(
+            child: Container(
+              color: mainBgCrl,
+              width: MediaQuery.of(context).size.width,
+              height: MediaQuery.of(context).size.height,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Center(
+                    child: Image.asset('assets/images/splash_logo.png'),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                ],
               ),
-              const SizedBox(
-                height: 20,
-              ),
-              
-              
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }

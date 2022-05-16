@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moatamrk/business_logic/onboarding_cubit/onboarding_cubit.dart';
 import 'package:moatamrk/constant/colors.dart';
 import 'package:moatamrk/ui/main_widgets/custom_btn.dart';
 
@@ -66,80 +68,72 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
           ),
         ],
       ),
-      body: Container(
-        color: mainBgCrl,
-        child: Padding(
-          padding: const EdgeInsets.all(30.0),
-          child: Column(
-            children: [
-              Expanded(
-                child: PageView.builder(
-                  controller: boardController,
-                  physics: BouncingScrollPhysics(),
-                  onPageChanged: (int index) {
-                    if (index == boarding.length - 1) {
-                      setState(() {
-                        isLast = true;
-                      });
-                    } else {
-                      setState(() {
-                        isLast = false;
-                      });
-                    }
-                  },
-                  itemBuilder: (context, index) =>
-                      buildBoardingItem(boarding[index]),
-                  itemCount: boarding.length,
-                ),
-              ),
-              const SizedBox(
-                height: 40,
-              ),
-              Row(
+      body: BlocBuilder<OnboardingCubit, OnboardingState>(
+        builder: (context, state) {
+          return Container(
+            color: mainBgCrl,
+            child: Padding(
+              padding: const EdgeInsets.all(30.0),
+              child: Column(
                 children: [
-                  SmoothPageIndicator(
-                    controller: boardController,
-                    count: boarding.length,
-                    effect: ExpandingDotsEffect(
-                      dotColor: white,
-                      dotHeight: 10,
-                      dotWidth: 10,
-                      expansionFactor: 3.5,
-                      spacing: 5,
+                  Expanded(
+                    child: PageView.builder(
+                      controller: boardController,
+                      physics: BouncingScrollPhysics(),
+                      onPageChanged: (int index) {
+                        if (index == boarding.length - 1) {
+                          OnboardingCubit.get(context).isLast = true;
+                        }
+                      },
+                      itemBuilder: (context, index) =>
+                          buildBoardingItem(boarding[index]),
+                      itemCount: boarding.length,
                     ),
                   ),
-                  const Spacer(),
-                  SizedBox(
-                    width: MediaQuery.of(context).size.width * 0.3,
+                  const SizedBox(
                     height: 40,
-                    child: CustomBtn(
-                        text: 'Next',
-                        txtColor: black,
-                        color: white,
-                        onTap: () {
-                          if (isLast == true) {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) =>
-                                      const LoginMethodsScreen()),
-                              (route) => false,
-                            );
-                          } else {
-                            boardController.nextPage(
-                              duration: const Duration(
-                                milliseconds: 750,
-                              ),
-                              curve: Curves.fastLinearToSlowEaseIn,
-                            );
-                          }
-                        }),
-                  )
+                  ),
+                  Row(
+                    children: [
+                      SmoothPageIndicator(
+                        controller: boardController,
+                        count: boarding.length,
+                        effect: ExpandingDotsEffect(
+                          dotColor: white,
+                          dotHeight: 10,
+                          dotWidth: 10,
+                          expansionFactor: 3.5,
+                          spacing: 5,
+                        ),
+                      ),
+                      const Spacer(),
+                      SizedBox(
+                        width: MediaQuery.of(context).size.width * 0.3,
+                        height: 40,
+                        child: CustomBtn(
+                            text: 'Next',
+                            txtColor: black,
+                            color: white,
+                            onTap: () {
+                              if (isLast == true) {
+                                OnboardingCubit.get(context).load();
+                              } else {
+                                boardController.nextPage(
+                                  duration: const Duration(
+                                    milliseconds: 750,
+                                  ),
+                                  curve: Curves.fastLinearToSlowEaseIn,
+                                );
+                              }
+                            }),
+                      )
+                    ],
+                  ),
                 ],
               ),
-            ],
-          ),
-        ),
+            ),
+          );
+        },
       ),
     );
   }
