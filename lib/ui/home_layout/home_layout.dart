@@ -7,7 +7,11 @@ import '../notification_screen.dart';
 import '../qr_code_screen.dart';
 
 class HomeLayout extends StatefulWidget {
-  const HomeLayout({Key? key}) : super(key: key);
+  final int index;
+  const HomeLayout({
+    Key? key,
+    this.index = 0,
+  }) : super(key: key);
 
   @override
   State<HomeLayout> createState() => _HomeLayoutState();
@@ -32,6 +36,13 @@ class _HomeLayoutState extends State<HomeLayout> {
     NoteScreen(),
     QRScreen(),
   ];
+
+  @override
+  void initState() {
+    currentIndex = widget.index;
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,20 +53,20 @@ class _HomeLayoutState extends State<HomeLayout> {
         backgroundColor: mainBgCrl,
         currentIndex: currentIndex,
         onTap: onTap,
-        items: [
-          const BottomNavigationBarItem(
+        items: const [
+          BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.notifications),
             label: 'Notifications',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.notes),
             label: 'My ِAgenda',
           ),
-          const BottomNavigationBarItem(
+          BottomNavigationBarItem(
             icon: Icon(Icons.qr_code),
             label: 'QR Code',
           ),

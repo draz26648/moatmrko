@@ -1,20 +1,33 @@
 import 'package:date_picker_timeline/date_picker_timeline.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moatamrk/business_logic/events_cubit/events_cubit.dart';
+import 'package:moatamrk/business_logic/instructors_cubit/instructors_cubit.dart';
 import 'package:moatamrk/constant/colors.dart';
+import 'package:moatamrk/data/models/all_insturctorsModel.dart';
+import 'package:moatamrk/data/models/events_model.dart';
+import 'package:moatamrk/ui/instructor_details.dart';
 import 'package:moatamrk/ui/main_widgets/main_drawer.dart';
 import 'package:moatamrk/ui/profile_screen.dart';
 import 'package:moatamrk/ui/speaker_screen.dart';
 import 'package:moatamrk/ui/speakers_screen.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key}) : super(key: key);
+  const HomeScreen({
+    Key? key,
+  }) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  List<EventsModel> events = [];
+  List<AllInstructorsModel> instructors = [];
+
+  ImageProvider _image = AssetImage('assets/images/splash_logo.png');
+
   List<Map<String, dynamic>> eventList = [
     {
       'title': 'Database',
@@ -74,6 +87,14 @@ class _HomeScreenState extends State<HomeScreen> {
     },
   ];
   DateTime selectedDate = DateTime.now();
+
+  @override
+  void initState() {
+    context.read<EventsCubit>().getAllEvents();
+    context.read<InstructorsCubit>().getAllInstructors();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -144,22 +165,55 @@ class _HomeScreenState extends State<HomeScreen> {
             const SizedBox(
               height: 10,
             ),
-            Container(
-              height: 170,
-              child: ListView.separated(
-                separatorBuilder: (context, index) => const SizedBox(
-                  width: 7,
-                ),
-                itemCount: eventList.length,
-                scrollDirection: Axis.horizontal,
-                itemBuilder: (context, index) => buildEventsItem(
-                    eventList[index]['image'],
-                    context,
-                    eventList[index]['title'],
-                    eventList[index]['time'],
-                    eventList[index]['location']),
-              ),
-            ),
+            BlocConsumer<EventsCubit, EventsState>(listener: (context, state) {
+              if (state is EventsLoaded) {
+                events.clear();
+                state.eventsModel.forEach((element) {
+                  events.add(element);
+                });
+
+                setState(() {});
+              }
+            }, builder: (context, state) {
+              if (state is EventsLoading) {
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              } else if (state is EventsLoaded) {
+                return Container(
+                  height: 170,
+                  child: ListView.separated(
+                    separatorBuilder: (context, index) => const SizedBox(
+                      width: 7,
+                    ),
+                    itemCount: events.length,
+                    scrollDirection: Axis.horizontal,
+                    itemBuilder: (context, index) => InkWell(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => SpeakerScreen(
+                              image: 'assets/images/splash_logo.png',
+                              speakerName: events[index].title!,
+                              speakerBio: events[index].subject!,
+                            ),
+                          ),
+                        );
+                      },
+                      child: buildEventsItem(
+                        eventList[index]['image'],
+                        context,
+                        events[index].title,
+                        events[index].startDate.toString(),
+                        events[index].hall,
+                      ),
+                    ),
+                  ),
+                );
+              }
+              return Container();
+            }),
             const SizedBox(
               height: 10,
             ),
@@ -182,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     children: [
                       Image.asset('assets/images/event.png'),
                       Container(
-                        height: 69,
+                        height: MediaQuery.of(context).size.height * 0.1,
                         width: 220,
                         decoration: BoxDecoration(color: Colors.white),
                         child: Column(
@@ -225,7 +279,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Column(
                 children: [
                   Row(
-                    children:  [
+                    children: [
                       const SizedBox(
                         width: 10,
                       ),
@@ -238,14 +292,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       ),
                       const Spacer(),
                       InkWell(
-                        onTap: (){
+                        onTap: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => SpeakersScreen(),
                             ),
                           );
-                        
                         },
                         child: const Text(
                           'View All',
@@ -263,33 +316,44 @@ class _HomeScreenState extends State<HomeScreen> {
                   const SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: 150,
-                    child: ListView.separated(
-                      separatorBuilder: (context, index) => const SizedBox(
-                        width: 7,
-                      ),
-                      itemCount: eventDoctors.length,
-                      scrollDirection: Axis.horizontal,
-                      itemBuilder: (context, index) => InkWell(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => SpeakerScreen(
-                                image: eventDoctors[index]['image'],
-                                speakerName: eventDoctors[index]['name'],
-                                speakerBio: eventDoctors[index]['section'],
-                              ),
+                  BlocConsumer<InstructorsCubit, InstructorsState>(
+                    listener: (context, state) {
+                      if (state is InstructorsLoaded) {
+                        state.instructors.forEach((element) {
+                          instructors.add(element);
+                        });
+                        setState(() {});
+                      }
+                    },
+                    builder: (context, state) {
+                      return Container(
+                        padding: EdgeInsets.all(15),
+                        height: 150,
+                        child: ListView.separated(
+                          separatorBuilder: (context, index) => const SizedBox(
+                            width: 7,
+                          ),
+                          itemCount: instructors.length,
+                          scrollDirection: Axis.horizontal,
+                          itemBuilder: (context, index) => InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => InstructorDetails(
+                                      model: instructors[index]),
+                                ),
+                              );
+                            },
+                            child: buildDocItem(
+                              instructors[index].img,
+                              instructors[index].fullName,
+                              instructors[index].specialization,
                             ),
-                          );
-                        },
-                        child: buildDocItem(
-                            eventDoctors[index]['image'],
-                            eventDoctors[index]['name'],
-                            eventDoctors[index]['section']),
-                      ),
-                    ),
+                          ),
+                        ),
+                      );
+                    },
                   ),
                 ],
               ),
@@ -397,9 +461,11 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Row(
           children: [
             Stack(alignment: AlignmentDirectional.bottomEnd, children: [
-              CircleAvatar(
-                radius: 30.0,
-                backgroundImage: AssetImage(imageUrl!),
+              ClipRect(
+                child: CircleAvatar(
+                  radius: 30.0,
+                  backgroundImage: _image,
+                ),
               ),
               const Padding(
                 padding: EdgeInsetsDirectional.only(

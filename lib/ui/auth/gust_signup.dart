@@ -1,9 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:moatamrk/business_logic/register_cubit/gust_register_cubit.dart';
 import 'package:moatamrk/constant/colors.dart';
+import 'package:moatamrk/navigator/custom_navigator.dart';
+import 'package:moatamrk/navigator/routes.dart';
 import 'package:moatamrk/ui/auth/payment_screen.dart';
 import 'package:moatamrk/ui/main_widgets/custom_btn.dart';
 import 'package:moatamrk/ui/main_widgets/custom_text_field.dart';
 
+import '../../business_logic/register_cubit/register_state.dart';
 import '../home_layout/home_layout.dart';
 
 class GuestSignUpScreen extends StatefulWidget {
@@ -124,19 +129,27 @@ class _GuestSignUpScreenState extends State<GuestSignUpScreen> {
                 },
                 hint: 'Phone',
                 inputType: TextInputType.number,
-                controller: _countryController,
+                controller: _phoneController,
                 prefixIcon: Icon(Icons.mobile_friendly, color: mainBgCrl),
               ),
               const SizedBox(
                 height: 20,
               ),
-              CustomBtn(
-                text: 'Sign Up',
-                onTap: () {
-                  Navigator.pushReplacement(context,
-                      MaterialPageRoute(builder: (context) => PaymentScreen()));
+              BlocBuilder<GustRegisterCubit, RegisterState>(
+                builder: (context, state) {
+                  return CustomBtn(
+                    text: 'Sign Up',
+                    onTap: () {
+                      context.read<GustRegisterCubit>().register(
+                          full_name:
+                              '${_firstNameController.text} ${_lastNameController.text}',
+                          email: _emailController.text,
+                          password: _passwordController.text);
+                      CustomNavigator.push(Routes.PaymentScreen, clean: true);
+                    },
+                    color: mainBgCrl,
+                  );
                 },
-                color: mainBgCrl,
               ),
             ],
           ),

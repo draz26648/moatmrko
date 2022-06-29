@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:moatamrk/ui/auth/login_methods.dart';
+import 'package:moatamrk/ui/home_layout/home_layout.dart';
 import 'package:moatamrk/ui/on_boarding/splash_screen.dart';
 
 import '../ui/auth/login_methods_screen.dart';
+import '../ui/auth/payment_screen.dart';
 import '../ui/auth/signup_methods_screen.dart';
+import '../ui/home_screen.dart';
 import '../ui/on_boarding/on_borading_screen.dart';
 import 'routes.dart';
 
@@ -20,6 +24,15 @@ abstract class CustomNavigator {
         return MaterialPageRoute(builder: (_) => const SignUpMethodsScreen());
       case Routes.LOGIN:
         return MaterialPageRoute(builder: (_) => const LoginMethodsScreen());
+      case Routes.HOME:
+        return MaterialPageRoute(
+            builder: (_) => HomeLayout(
+                  index: 0,
+                ));
+      case Routes.PaymentScreen:
+        return MaterialPageRoute(builder: (_) => const PaymentScreen());
+      case Routes.LoginMethods:
+        return MaterialPageRoute(builder: (_) => const LoginMethods());
     }
     return MaterialPageRoute(builder: (_) => Container());
   }

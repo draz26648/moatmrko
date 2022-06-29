@@ -8,14 +8,14 @@ import '../../constant/colors.dart';
 import '../main_widgets/custom_btn.dart';
 import '../main_widgets/custom_text_field.dart';
 
-class SignInScreen extends StatefulWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+class InstructorSignInScreen extends StatefulWidget {
+  const InstructorSignInScreen({Key? key}) : super(key: key);
 
   @override
-  State<SignInScreen> createState() => _SignInScreenState();
+  State<InstructorSignInScreen> createState() => _InstructorSignInScreenState();
 }
 
-class _SignInScreenState extends State<SignInScreen> {
+class _InstructorSignInScreenState extends State<InstructorSignInScreen> {
   TextEditingController _emailController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
   bool _isChecked = false;
@@ -85,11 +85,9 @@ class _SignInScreenState extends State<SignInScreen> {
                     CustomBtn(
                       text: 'Sign In',
                       onTap: () {
-                        context.read<LoginCubit>().login(
+                        context.read<LoginCubit>().instructorLogin(
                               email: _emailController.text,
                               password: _passwordController.text,
-                              isRemeber: _isChecked,
-                              isInstructor: false,
                             );
                       },
                       color: mainBgCrl,

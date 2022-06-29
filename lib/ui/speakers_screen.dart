@@ -47,46 +47,46 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
         elevation: 0,
         backgroundColor: mainBgCrl,
       ),
-      body: SingleChildScrollView(
-        child: Column(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width,
-              height: MediaQuery.of(context).size.height * 0.2,
-              decoration: BoxDecoration(
-                color: mainBgCrl,
-                borderRadius: const BorderRadius.only(
-                  bottomLeft: Radius.circular(30),
-                  bottomRight: Radius.circular(30),
-                ),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Column(
-                  children: [
-                    Text('Speakers',
-                        style: TextStyle(color: white, fontSize: 25)),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    CustomTextField(
-                      validate: (value) {
-                        if (value.isEmpty) {
-                          return 'Please enter your name';
-                        }
-                        return null;
-                      },
-                      prefixIcon: const Icon(Icons.search, color: Colors.grey),
-                      label: 'Search',
-                    ),
-                  ],
-                ),
+      body: Column(
+        children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            height: MediaQuery.of(context).size.height * 0.2,
+            decoration: BoxDecoration(
+              color: mainBgCrl,
+              borderRadius: const BorderRadius.only(
+                bottomLeft: Radius.circular(30),
+                bottomRight: Radius.circular(30),
               ),
             ),
-            const SizedBox(
-              height: 20,
+            child: Padding(
+              padding: const EdgeInsets.all(15.0),
+              child: Column(
+                children: [
+                  Text('Speakers',
+                      style: TextStyle(color: white, fontSize: 25)),
+                  const SizedBox(
+                    height: 15,
+                  ),
+                  CustomTextField(
+                    validate: (value) {
+                      if (value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                    prefixIcon: const Icon(Icons.search, color: Colors.grey),
+                    label: 'Search',
+                  ),
+                ],
+              ),
             ),
-            Container(
+          ),
+          const SizedBox(
+            height: 20,
+          ),
+          Expanded(
+            child: Container(
               height: 600,
               padding: const EdgeInsets.all(8),
               child: ListView.separated(
@@ -94,6 +94,7 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
                         height: 10,
                       ),
                   itemCount: eventDoctors.length,
+                  shrinkWrap: true,
                   scrollDirection: Axis.vertical,
                   itemBuilder: (context, index) => InkWell(
                         onTap: () {
@@ -114,8 +115,8 @@ class _SpeakersScreenState extends State<SpeakersScreen> {
                             eventDoctors[index]['section']),
                       )),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

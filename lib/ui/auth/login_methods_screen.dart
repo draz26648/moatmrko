@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:moatamrk/constant/colors.dart';
+import 'package:moatamrk/navigator/custom_navigator.dart';
+import 'package:moatamrk/navigator/routes.dart';
 import 'package:moatamrk/ui/auth/sign_in_screen.dart';
 import 'package:moatamrk/ui/auth/signup_methods_screen.dart';
 import 'package:moatamrk/ui/main_widgets/custom_btn.dart';
@@ -51,11 +53,7 @@ class _LoginMethodsScreenState extends State<LoginMethodsScreen> {
               CustomBtn(
                 text: 'Sign In',
                 onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const SignInScreen(),
-                      ));
+                  CustomNavigator.push(Routes.LoginMethods);
                 },
                 color: white,
                 txtColor: black,

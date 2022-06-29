@@ -28,6 +28,8 @@ class SplashCubit extends Cubit<SplashState> {
       } else {
         if (_token == null) {
           CustomNavigator.push(Routes.LOGIN, clean: true);
+        } else {
+          CustomNavigator.push(Routes.HOME, clean: true);
         }
       }
     });

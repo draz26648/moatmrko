@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:moatamrk/data/models/base_models/profile.dart';
+import 'package:moatamrk/data/models/profile_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 abstract class Enum<T> {
@@ -15,10 +17,38 @@ class CachingKey extends Enum<String> {
   static const CachingKey USER = const CachingKey('USER');
   static const CachingKey TOKEN = const CachingKey('REAL_TOKEN');
   static const CachingKey FIRST_TIME = const CachingKey('FIRST_TIME');
+  static const CachingKey PROFILE_ID = const CachingKey('PROFILE_ID');
+  static const CachingKey IS_INSTRUCTOR = const CachingKey('IS_INSTRCTOR');
 }
 
 class SharedHelper {
   late SharedPreferences _shared;
+
+  Future<Profile> getUser() async {
+    _shared = await SharedPreferences.getInstance();
+    Profile _user;
+    _user =
+        Profile.fromJson(jsonDecode(_shared.getString(CachingKey.USER.value)!));
+    print('User >>> ${_user.toJson()}');
+    return _user;
+  }
+
+  copyUserWith(Profile user) async {
+    _shared = await SharedPreferences.getInstance();
+    Profile _finalUser =
+        Profile.fromJson(jsonDecode(_shared.getString(CachingKey.USER.value)!));
+
+    Map<String, dynamic> _newUser = {};
+    _newUser.addAll(_finalUser.toJson());
+
+    for (int i = 0; i < user.toJson().length; i++) {
+      if (user.toJson().values.toList()[i] != null) {
+        _newUser[user.toJson().entries.toList()[i].key] =
+            user.toJson().values.toList()[i];
+      }
+    }
+    await _shared.setString(CachingKey.USER.value, json.encode(_newUser));
+  }
 
   removeData(CachingKey key) async {
     _shared = await SharedPreferences.getInstance();

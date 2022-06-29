@@ -3,11 +3,18 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:moatamrk/bloc_observer.dart';
+import 'package:moatamrk/business_logic/events_cubit/events_cubit.dart';
+import 'package:moatamrk/business_logic/login_cubit/login_cubit.dart';
 import 'package:moatamrk/business_logic/onboarding_cubit/onboarding_cubit.dart';
+import 'package:moatamrk/business_logic/register_cubit/gust_register_cubit.dart';
+import 'package:moatamrk/business_logic/register_cubit/instructor_register_cubit.dart';
 import 'package:moatamrk/business_logic/splash_cubit/splash_cubit.dart';
+import 'package:moatamrk/business_logic/user_cubit/user_cubit.dart';
 import 'package:moatamrk/constant/colors.dart';
 import 'package:moatamrk/navigator/custom_navigator.dart';
 import 'package:moatamrk/navigator/routes.dart';
+
+import 'business_logic/instructors_cubit/instructors_cubit.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -29,11 +36,26 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<SplashCubit>(
-          create: (context) => SplashCubit(),
+          create: (_) => SplashCubit(),
         ),
         BlocProvider<OnboardingCubit>(
-          create: (context) => OnboardingCubit(),
+          create: (_) => OnboardingCubit(),
         ),
+        BlocProvider<LoginCubit>(
+          create: (_) => LoginCubit(),
+        ),
+        BlocProvider<GustRegisterCubit>(
+          create: (_) => GustRegisterCubit(),
+        ),
+        BlocProvider<UserCubit>(
+          create: (_) => UserCubit(),
+        ),
+        BlocProvider<EventsCubit>(
+          create: (_) => EventsCubit(),
+        ),
+        BlocProvider<InstructorsCubit>(
+          create: (_) => InstructorsCubit(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

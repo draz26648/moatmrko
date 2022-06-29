@@ -1,4 +1,3 @@
-import 'package:bloc/bloc.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:meta/meta.dart';
 import 'package:moatamrk/navigator/custom_navigator.dart';
@@ -14,9 +13,7 @@ class OnboardingCubit extends Cubit<OnboardingState> {
 
   bool isLast = false;
   void load() {
-    if(isLast)
-    
-    CustomNavigator.push(Routes.LOGIN);
+    if (isLast) CustomNavigator.push(Routes.LOGIN);
     emit(OnboardingLoaded());
   }
 }
